@@ -1,8 +1,6 @@
 import React from 'react'
 
 class Filters extends React.Component {
-
-
   state = {
     type: ''
   }
@@ -35,7 +33,7 @@ class Filters extends React.Component {
         <h3>Animal type</h3>
         <div className="field" >
           <select name="type" id="type" onChange={this.changeState} >
-
+{/* change state of type  */}
             <option value="all">All</option>
             <option value="cat">Cats</option>
             <option value="dog">Dogs</option>
@@ -45,6 +43,9 @@ class Filters extends React.Component {
 
         <div className="field">
           <button onClick={this.handleClick} className="ui secondary button">Find pets</button>
+          {/* on click we pass the new state into our onChangeType function that sets the state of type for our parent 
+          after that on the parent page we can invoke fetchPets and the dynamic state.type will determine the endpoint for the fetch
+          */}
         </div>
       </div>
     )
