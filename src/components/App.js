@@ -1,12 +1,10 @@
 import React from 'react'
-
 import Filters from './Filters'
 import PetBrowser from './PetBrowser'
-
+let ENDPOINT = '/api/pets'
 class App extends React.Component {
   constructor() {
     super()
-
     this.state = {
       pets: [],
       filters: {
@@ -14,8 +12,22 @@ class App extends React.Component {
       }
     }
   }
-
+  onChangeType = (value) => {
+    this.setState({filters: {type: value}})
+  }
+  getAllPets = () => {
+    fetch(ENDPOINT)
+    .then(response => response.json())
+    .then(pets => this.getPets(pets))
+  }
+  getPets = (newValue) => {
+    this.setState({pets: newValue})
+  }
+  getFilteredPets = () => {
+    fetch(ENDPOINT + '?type=' + this.state.filters.type).then(resp => resp.json()).then(pets => this.getPets(pets))
+  }
   render() {
+    (this.state.filters.type !== 'all') ?  this.getFilteredPets() : this.getAllPets()
     return (
       <div className="ui container">
         <header>
@@ -24,10 +36,10 @@ class App extends React.Component {
         <div className="ui container">
           <div className="ui grid">
             <div className="four wide column">
-              <Filters />
+              <Filters onChangeType={this.onChangeType}/>
             </div>
             <div className="twelve wide column">
-              <PetBrowser />
+              <PetBrowser pets={this.state.pets}/>
             </div>
           </div>
         </div>
@@ -35,5 +47,4 @@ class App extends React.Component {
     )
   }
 }
-
 export default App
